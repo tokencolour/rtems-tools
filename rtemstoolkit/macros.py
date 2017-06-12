@@ -48,10 +48,13 @@ try:
     from . import error
     from . import log
     from . import path
+    from . import configuration
 except (ValueError, SystemError):
     import error
     import log
     import path
+    import configuration
+
 
 #
 # Macro tables
@@ -123,7 +126,16 @@ class macros:
             self.read_map_locked = copy.copy(original.read_map_locked)
             self.write_map = copy.copy(original.write_map)
         if name is not None:
-            self.load(name)
+            #self.load(name)
+            self.config = configuration.configuration()
+            self.config.load(name)
+            self.add_macros()
+            #self.config.load(name)
+
+    def add_macros(self):
+        for section in self.config.config.sections():
+                for label in self.config.config.options(section):
+                    self.macros[section][label] = self.config.get_item(section, label)
 
     def __copy__(self):
         return macros(original = self)
@@ -474,6 +486,8 @@ class macros:
             for m in self.macro_filter.findall(_str):
                 name = m[2:-1]
                 macro = self.get(name)
+                #for section in self.config.config.sections():
+                #    macro = self.config.get_item(section, name)
                 if macro is None:
                     raise error.general('cannot expand default macro: %s in "%s"' %
                                         (m, _str))

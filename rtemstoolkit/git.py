@@ -80,6 +80,7 @@ class repo:
             self.git = 'git'
         else:
             self.git = self.macros.expand('%{__git}')
+            #self.git = self.macros.config.get_item('global', '__git')
 
     def git_version(self):
         ec, output = self._run(['--version'], True)

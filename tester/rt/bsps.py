@@ -33,7 +33,9 @@ from rtemstoolkit import log
 from rtemstoolkit import path
 
 def list(opts):
-    path_ = opts.defaults.expand('%%{_configdir}/bsps/*.mc')
+    #path_ = opts.defaults.expand('%%{_configdir}/bsps/*.mc')
+    path_ = opts.defaults.expand('%%{_configdir}/bsps/*.ini')
+    #path_ = opts.defaults.config.get_item('%%{_configdir}/bsps/*.mc')
     bsps = path.collect_files(path_)
     log.notice(' BSP List:')
     for bsp in bsps:

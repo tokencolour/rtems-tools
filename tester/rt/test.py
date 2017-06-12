@@ -219,7 +219,9 @@ def _job_trace(tst, msg, total, exe, active, reporting):
                                                 reporting, total, exe, s))
 
 def list_bsps(opts):
-    path_ = opts.defaults.expand('%%{_configdir}/bsps/*.mc')
+    #path_ = opts.defaults.expand('%%{_configdir}/bsps/*.mc')
+    path_ = opts.defaults.expand('%%{_configdir}/bsps/*.ini')
+    #path_ = opts.defaults.config.get_item('%%{_configdir}/bsps/*.mc')
     bsps = path.collect_files(path_)
     log.notice(' BSP List:')
     for bsp in bsps:
@@ -277,8 +279,9 @@ def run(command_path = None):
         bsp = opts.find_arg('--rtems-bsp')
         if bsp is None or len(bsp) != 2:
             raise error.general('RTEMS BSP not provided or invalid option')
-        opts.defaults.load('%%{_configdir}/bsps/%s.mc' % (bsp[1]))
-        bsp = opts.defaults.get('%{bsp}')
+        #opts.defaults.load('%%{_configdir}/bsps/%s.mc' % (bsp[1]))
+        opts.defaults.config.load(opts.defaults.expand('%%{_configdir}/bsps/%s.ini' % (bsp[1])))
+        bsp = opts.defaults.config.get_item(bsp[1], 'bsp')
         if not bsp:
             raise error.general('BSP definition (%{bsp}) not found in the global map')
         bsp = bsp[2]

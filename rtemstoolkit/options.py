@@ -427,6 +427,7 @@ class command_line(object):
             return None
         um = []
         configs = self.defaults.expand('%{_configdir}').split(':')
+        #configs = self.defaults.config.get_item('%{_configdir}').split(':')
         for m in self.opts['macros'].split(','):
             if path.exists(m):
                 um += [m]

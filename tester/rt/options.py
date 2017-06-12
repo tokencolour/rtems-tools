@@ -52,7 +52,7 @@ from rtemstoolkit import version
 #
 # The path for the defaults.
 #
-defaults_mc = 'rtems/testing/defaults.mc'
+defaults_mc = 'rtems/testing/defaults.ini'
 
 class command_line(options.command_line):
     """Process the command line in a common way for all Tool Builder commands."""

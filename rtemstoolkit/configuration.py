@@ -41,9 +41,14 @@ try:
     import configparser
 except:
     import ConfigParser as configparser
-
-from rtemstoolkit import error
-from rtemstoolkit import path
+    
+try :
+    from . import error
+    from . import path
+except (ValueError, SystemError):
+    import error
+    import path
+    
 
 class configuration:
 
