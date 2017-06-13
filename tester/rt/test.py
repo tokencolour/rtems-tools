@@ -280,7 +280,8 @@ def run(command_path = None):
         if bsp is None or len(bsp) != 2:
             raise error.general('RTEMS BSP not provided or invalid option')
         #opts.defaults.load('%%{_configdir}/bsps/%s.mc' % (bsp[1]))
-        opts.defaults.config.load(opts.defaults.expand('%%{_configdir}/bsps/%s.ini' % (bsp[1])))
+        opts.defaults.load('%%{_configdir}/bsps/%s.ini' % (bsp[1]))
+        #opts.defaults.config.load(opts.defaults.expand('%%{_configdir}/bsps/%s.ini' % (bsp[1])))
         bsp = opts.defaults.config.get_item(bsp[1], 'bsp')
         if not bsp:
             raise error.general('BSP definition (%{bsp}) not found in the global map')

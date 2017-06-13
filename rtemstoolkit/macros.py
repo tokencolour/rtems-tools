@@ -106,15 +106,20 @@ class macros:
             else:
                 self.prefix = '.'
             self.macros['global'] = {}
-            self.macros['global']['nil'] = ('none', 'none', '')
-            self.macros['global']['_cwd'] = ('dir',
-                                             'required',
-                                             path.abspath(os.getcwd()))
-            self.macros['global']['_prefix'] = ('dir', 'required', self.prefix)
-            self.macros['global']['_rtdir'] = ('dir',
-                                               'required',
-                                               path.abspath(self.expand(rtdir)))
-            self.macros['global']['_rttop'] = ('dir', 'required', self.prefix)
+            #self.macros['global']['nil'] = ('none', 'none', '')
+            #self.macros['global']['_cwd'] = ('dir',
+            #                                 'required',
+            #                                 path.abspath(os.getcwd()))
+            #self.macros['global']['_prefix'] = ('dir', 'required', self.prefix)
+            #self.macros['global']['_rtdir'] = ('dir',
+            #                                   'required',
+            #                                   path.abspath(self.expand(rtdir)))
+            #self.macros['global']['_rttop'] = ('dir', 'required', self.prefix)
+            self.macros['global']['nil'] = ''
+            self.macros['global']['_cwd'] = path.abspath(os.getcwd())
+            self.macros['global']['_prefix'] = self.prefix
+            self.macros['global']['_rtdir'] = path.abspath(self.expand(rtdir))
+            self.macros['global']['_rttop'] = self.prefix
         else:
             self.macros = {}
             for m in original.macros:
@@ -417,9 +422,10 @@ class macros:
             log.trace('opening: %s' % (n))
             if path.exists(n):
                 try:
-                    mc = open(path.host(n), 'r')
-                    macros = self.parse(mc)
-                    mc.close()
+                    #mc = open(path.host(n), 'r')
+                    #macros = self.parse(mc)
+                    #mc.close()
+                    self.config.load(n)
                     self.files += [n]
                     return
                 except IOError as err:
@@ -491,7 +497,7 @@ class macros:
                 if macro is None:
                     raise error.general('cannot expand default macro: %s in "%s"' %
                                         (m, _str))
-                _str = _str.replace(m, macro[2])
+                _str = _str.replace(m, macro)
                 expanded = True
         return _str
 
