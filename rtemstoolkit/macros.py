@@ -134,7 +134,12 @@ class macros:
             #self.load(name)
             self.config = configuration.configuration()
             self.config.load(name)
-            self.add_macros()
+            for m in self.config.macros:
+                if m not in self.macros:
+                    self.macros[m] = {}
+                for k in self.config.macros[m]:
+                    self.macros[m][k] = copy.copy(self.config.macros[m][k])
+            self.macros = self.config.macros
             #self.config.load(name)
 
     def add_macros(self):

@@ -56,6 +56,7 @@ class configuration:
         self.config = configparser.ConfigParser()
         self.ini = None
         self.macro_filter = re.compile('\$\{.+\}')
+        self.macros = {}
 
     def get_item(self, section, label, err = True):
         try:
@@ -128,6 +129,7 @@ class configuration:
                 if include not in self.ini['files']:
                     try:
                         self.config.read(include)
+                        self.add_macros()
                     except configparser.ParsingError as ce:
                         raise error.general('config: %s' % (ce))
                     still_loading = True
@@ -137,6 +139,10 @@ class configuration:
                 for section in self.config.sections():
                     includes += self.comma_list(section, 'include', err = False)
 
+    def add_macros(self):
+        for section in self.config.sections():
+                for label in self.config.options(section):
+                    self.macros[section][label] = self.get_item(section, label)
 
     def files(self):
         return self.ini['files']
